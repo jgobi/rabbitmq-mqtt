@@ -53,14 +53,16 @@ cached(CacheName, Fun, Arg) ->
     end.
 
 to_amqp(T0) ->
-    T1 = string:replace(T0, "/", ".", all),
-    T2 = string:replace(T1, "+", "*", all),
-    erlang:iolist_to_binary(T2).
+    T1 = string:replace(T0, ".", "'", all),
+    T2 = string:replace(T1, "/", ".", all),
+    T3 = string:replace(T2, "+", "*", all),
+    erlang:iolist_to_binary(T3).
 
 to_mqtt(T0) ->
     T1 = string:replace(T0, "*", "+", all),
     T2 = string:replace(T1, ".", "/", all),
-    erlang:iolist_to_binary(T2).
+    T3 = string:replace(T2, "'", ".", all),
+    erlang:iolist_to_binary(T3).
 
 %% amqp mqtt descr
 %% *    +    match one topic level
